@@ -2,6 +2,24 @@
     background-color: aliceblue;
 }
 
+.task-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(64, 197, 181);
+    z-index: 1000;
+}
+
+.task-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, .7);
+}
+
 .task-list {
     background-color: rgb(119, 46, 46);
 }
