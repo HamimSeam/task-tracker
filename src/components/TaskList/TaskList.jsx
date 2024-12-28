@@ -3,7 +3,7 @@ import { useState } from "react";
 import ReactDom from "react-dom";
 
 function Task({ task }) {
-  const { title, course, dueDate, description, label } = task;
+  const { title, course, dueDate, description } = task;
 
   return (
     <div className="task">
@@ -12,7 +12,6 @@ function Task({ task }) {
         <li>Course: {course}</li>
         <li>Due Date: {dueDate}</li>
         <li>Description: {description}</li>
-        <li>Label: {label}</li>
       </ul>
     </div>
   );
@@ -29,7 +28,6 @@ function TaskModal({ addTask, mode, onClose }) {
     const course = form["course"].value;
     const dueDate = form["due-date"].value;
     const description = form["description"].value;
-    const label = form["label"].value;
     const id = Date.now();
 
     const taskInfo = {
@@ -37,7 +35,6 @@ function TaskModal({ addTask, mode, onClose }) {
       course,
       dueDate,
       description,
-      label,
       id,
     };
 
@@ -45,10 +42,9 @@ function TaskModal({ addTask, mode, onClose }) {
     addTask(taskInfo);
   }
 
-  return ReactDom.createPortal(
+  return (
     <>
-      <div className="task-modal-overlay" />
-      <div className="task-modal">
+      <dialog className="task-modal" open>
         <form onSubmit={handleFormSubmit}>
           <label htmlFor="title">Task Title: </label>
           <input type="text" id="title" name="title" required />
@@ -66,18 +62,13 @@ function TaskModal({ addTask, mode, onClose }) {
           <input type="text" id="description" name="description" />
           <br />
 
-          <label htmlFor="label">Label: </label>
-          <input type="text" id="label" name="label" />
-          <br />
-
           <button type="submit">Add Task</button>
         </form>
         <button type="button" onClick={onClose}>
           Close Modal
         </button>
-      </div>
-    </>,
-    document.getElementById("task-modal")
+      </dialog>
+    </>
   );
 }
 
@@ -91,8 +82,8 @@ function TaskList() {
         +
       </button>
 
-      {tasks.map((task, index) => (
-        <Task key={index} task={task} />
+      {tasks.map((task) => (
+        <Task key={task.id} task={task} />
       ))}
       {
         <TaskModal
