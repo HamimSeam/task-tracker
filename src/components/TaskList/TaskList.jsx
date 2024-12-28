@@ -1,6 +1,5 @@
 import "./TaskList.css";
-import { useState } from "react";
-import ReactDom from "react-dom";
+import { useState, useRef } from "react";
 
 function Task({ task }) {
   const { title, course, dueDate, description } = task;
@@ -17,9 +16,7 @@ function Task({ task }) {
   );
 }
 
-function TaskModal({ addTask, mode, onClose }) {
-  if (mode === "close") return null;
-
+function TaskModal({ modalRef, addTask, onClose }) {
   function handleFormSubmit(event) {
     event.preventDefault();
     const form = event.target;
@@ -44,7 +41,7 @@ function TaskModal({ addTask, mode, onClose }) {
 
   return (
     <>
-      <dialog className="task-modal" open>
+      <dialog ref={modalRef} className="task-modal">
         <form onSubmit={handleFormSubmit}>
           <label htmlFor="title">Task Title: </label>
           <input type="text" id="title" name="title" required />
@@ -74,11 +71,18 @@ function TaskModal({ addTask, mode, onClose }) {
 
 function TaskList() {
   const [tasks, setTasks] = useState([]);
-  const [modalMode, setModalMode] = useState("close");
+  const modalRef = useRef(null);
+
+  function toggleTaskModal() {
+    if (!modalRef.current) return;
+    modalRef.current.hasAttribute("open")
+      ? modalRef.current.close()
+      : modalRef.current.showModal();
+  }
 
   return (
     <>
-      <button type="button" onClick={() => setModalMode("open")}>
+      <button type="button" onClick={toggleTaskModal}>
         +
       </button>
 
@@ -87,12 +91,12 @@ function TaskList() {
       ))}
       {
         <TaskModal
+          modalRef={modalRef}
           addTask={(newTask) => {
             setTasks([...tasks, newTask]);
-            setModalMode("close");
+            toggleTaskModal();
           }}
-          mode={modalMode}
-          onClose={() => setModalMode("close")}
+          onClose={toggleTaskModal}
         ></TaskModal>
       }
     </>
