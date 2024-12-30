@@ -1,10 +1,10 @@
 import TaskList from "../TaskList/TaskList.jsx";
 import "./Category.css";
 
-function Category({ children }) {
+function Category({ name }) {
   return (
     <div className="category">
-      <h2>{children}</h2>
+      <h2>{name}</h2>
       <TaskList />
     </div>
   );

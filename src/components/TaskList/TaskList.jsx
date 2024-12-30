@@ -81,7 +81,7 @@ function TaskList() {
   }
 
   return (
-    <>
+    <div className="task-list">
       <button type="button" onClick={toggleTaskModal}>
         +
       </button>
@@ -99,7 +99,7 @@ function TaskList() {
           onClose={toggleTaskModal}
         ></TaskModal>
       }
-    </>
+    </div>
   );
 }
 
