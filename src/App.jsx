@@ -5,7 +5,36 @@ import TaskList from "./components/TaskList/TaskList.jsx";
 import Category from "./components/Category/Category.jsx";
 
 function App() {
-  const [categories, setCategories] = useState({});
+  const [categories, setCategories] = useState({
+    1: {
+      name: "Software Design Lab",
+      tasks: {
+        1: {
+          title: "Submit Final Project",
+          course: "Software Design Lab",
+          dueDate: "01/01/2025",
+          description: "Finalize the endpoint.",
+        },
+        2: {
+          title: "Revise Vending Machine",
+          course: "Computer Systems",
+          dueDate: "01/01/2025",
+          description: "Finalize the assembly code.",
+        },
+      },
+    },
+    3: {
+      name: "Methods of Differential Equations",
+      tasks: {
+        4: {
+          title: "Study Separation of Variables (PDE)",
+          course: "Methods of Differential Equations",
+          dueDate: "01/05/2025",
+          description: "Remember the results with different eigenvalues.",
+        },
+      },
+    },
+  });
 
   function addCategory(categoryName) {
     const categoryId = crypto.randomUUID();
@@ -85,8 +114,7 @@ function App() {
         {Object.entries(categories).map(([categoryId, category]) => (
           <Category
             key={categoryId}
-            id={categoryId}
-            name={category.name}
+            category={category}
             taskFunctions={getTaskFunctions(categoryId)}
           />
         ))}

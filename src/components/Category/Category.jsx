@@ -1,11 +1,11 @@
 import TaskList from "../TaskList/TaskList.jsx";
 import "./Category.css";
 
-function Category({ name }) {
+function Category({ category, taskFunctions }) {
   return (
     <div className="category">
-      <h2>{name}</h2>
-      <TaskList />
+      <h2>{category.name}</h2>
+      <TaskList category={category} taskFunctions={taskFunctions} />
     </div>
   );
 }

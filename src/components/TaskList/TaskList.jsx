@@ -69,8 +69,8 @@ function TaskModal({ modalRef, addTask, onClose }) {
   );
 }
 
-function TaskList() {
-  const [tasks, setTasks] = useState([]);
+function TaskList({ category, taskFunctions }) {
+  const { addTask, getTask, editTask, removeTask } = taskFunctions;
   const modalRef = useRef(null);
 
   function toggleTaskModal() {
@@ -86,16 +86,13 @@ function TaskList() {
         +
       </button>
 
-      {tasks.map((task) => (
-        <Task key={task.id} task={task} />
+      {Object.entries(category.tasks).map(([taskId, task]) => (
+        <Task key={taskId} task={task} />
       ))}
       {
         <TaskModal
           modalRef={modalRef}
-          addTask={(newTask) => {
-            setTasks([...tasks, newTask]);
-            toggleTaskModal();
-          }}
+          addTask={(task) => addTask(task)}
           onClose={toggleTaskModal}
         ></TaskModal>
       }
