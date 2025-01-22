@@ -1,0 +1,46 @@
+.task-preview {
+    background-color: rgb(67, 126, 178);
+}
+
+.task-preview * {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.task {
+    background-color: antiquewhite;
+}
+
+.task * {
+    color: black;
+}
+
+.task input, .task-description {
+    background: none;
+    border: none;
+    outline: none;
+}
+
+.task-description {
+    resize: none;
+}
+
+.task button {
+    background: none;
+    border: none;
+    outline: none;
+    font-weight: bold;
+}
+
+.task-name {
+    font-size: 2.5em;
+    font-family: "Poppins", serif;
+    font-weight: bold;
+}
+
+.course-due-date * {
+    font-family: "Prompt", serif;
+    font-size: 1em;
+    font-weight: 500;
+}
