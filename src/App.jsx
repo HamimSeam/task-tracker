@@ -68,10 +68,10 @@ function App() {
       produce((draft) => {
         draft.splice(deletePos, 1);
 
-        if (modifiedTask.dueDate !== null) {
+        if (modifiedTask.dueDate !== "") {
           let insertPos = draft.findIndex(
             (task) =>
-              task.dueDate === null || modifiedTask.dueDate < task.dueDate
+              task.dueDate === "" || modifiedTask.dueDate < task.dueDate
           );
 
           if (insertPos === -1) insertPos = draft.length;

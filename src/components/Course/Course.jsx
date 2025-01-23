@@ -6,7 +6,7 @@ function Course({ course, tasks, addTask, editTask }) {
     const newTask = {
       name: "New Task",
       courseId: course.courseId,
-      dueDate: null,
+      dueDate: "",
       description: "",
       taskId: crypto.randomUUID(),
     };

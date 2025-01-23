@@ -7,13 +7,14 @@ export function TaskPreview({ task, course, editTask }) {
 
   function toggleShowTask() {
     if (modalRef.current.hasAttribute("open")) {
-      document.body.style.overflow = "auto";
+      console.log("closing modal");
       modalRef.current.close();
     } else {
-      document.body.style.overflow = "hidden";
+      console.log("opening modal");
       modalRef.current.showModal();
     }
   }
+
   return (
     <>
       <div className="task-preview" onClick={toggleShowTask}>
@@ -50,6 +51,22 @@ export function Task({ modalRef, toggleShowTask, task, course, editTask }) {
     }));
   }
 
+  function formatDate(date) {
+    const parsedDate = new Date(date);
+
+    const options = {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: "true",
+    };
+
+    return parsedDate.toLocaleString("en-US", options);
+  }
+
   function handleSaveTask(event) {
     event.preventDefault();
     editTask(modifiedTask);
@@ -62,6 +79,11 @@ export function Task({ modalRef, toggleShowTask, task, course, editTask }) {
   }
 
   function handleClose() {
+    if (isEditing) {
+      alert("You have unsaved changes.");
+      return;
+    }
+
     handleCancel();
     toggleShowTask();
   }
@@ -79,7 +101,7 @@ export function Task({ modalRef, toggleShowTask, task, course, editTask }) {
         )}
         <button onClick={handleClose}>Close</button>
       </div>
-      <form onSubmit={handleSaveTask}>
+      <form className="task-content" onSubmit={handleSaveTask}>
         <input
           className="task-name"
           type="text"
@@ -92,18 +114,22 @@ export function Task({ modalRef, toggleShowTask, task, course, editTask }) {
 
         <div className="course-due-date">
           <p className="task-course">{course.name}</p>
-          {task.dueDate === Infinity && !isEditing ? (
+          {task.dueDate === "" && !isEditing ? (
             <p>No due date</p>
           ) : (
             <div className="task-due-date-container">
-              <span>Due: </span>
+              <label htmlFor="dueDate">Due: </label>
               <input
                 className="task-due-date"
-                type="date"
+                type={isEditing ? "datetime-local" : "text"}
                 name="dueDate"
                 readOnly={!isEditing}
                 onChange={handleChange}
-                defaultValue={task.dueDate}
+                value={
+                  isEditing
+                    ? modifiedTask.dueDate
+                    : formatDate(modifiedTask.dueDate)
+                }
               ></input>
             </div>
           )}
@@ -116,7 +142,7 @@ export function Task({ modalRef, toggleShowTask, task, course, editTask }) {
           placeholder="Enter a description..."
           readOnly={!isEditing}
           onChange={handleChange}
-          defaultValue={task.description}
+          value={modifiedTask.description}
         ></textarea>
       </form>
     </dialog>
