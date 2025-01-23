@@ -13,10 +13,6 @@ function App() {
   ]);
   const [tasks, setTasks] = useState([]);
 
-  useEffect(() => {
-    console.log(tasks);
-  }, [tasks]);
-
   function addCourse(newCourse) {
     setCourses([...courses, newCourse]);
   }
@@ -60,6 +56,7 @@ function App() {
     return tasks.find((task) => task.taskId === taskId);
   }
 
+  // FIXME: maintain order for null dates
   function editTask(modifiedTask) {
     const deletePos = tasks.findIndex(
       (task) => task.taskId === modifiedTask.taskId
@@ -71,12 +68,17 @@ function App() {
       produce((draft) => {
         draft.splice(deletePos, 1);
 
-        let insertPos = draft.findIndex(
-          (task) => task.dueDate > modifiedTask.dueDate
-        );
-        
-        if (insertPos === -1) insertPos = draft.length;
-        draft.splice(insertPos, 0, modifiedTask);
+        if (modifiedTask.dueDate !== null) {
+          let insertPos = draft.findIndex(
+            (task) =>
+              task.dueDate === null || modifiedTask.dueDate < task.dueDate
+          );
+
+          if (insertPos === -1) insertPos = draft.length;
+          draft.splice(insertPos, 0, modifiedTask);
+        } else {
+          draft.push(modifiedTask);
+        }
       })
     );
   }
@@ -97,6 +99,7 @@ function App() {
           editTask={editTask}
         />
       ))}
+      <pre>{JSON.stringify(tasks, null, 2)}</pre>
     </>
   );
 }
