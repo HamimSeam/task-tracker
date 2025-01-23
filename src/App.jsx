@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useEffect } from "react";
+import { produce } from "immer";
 import Course from "./components/Course/Course.jsx";
 import "./App.css";
 
@@ -10,6 +12,10 @@ function App() {
     },
   ]);
   const [tasks, setTasks] = useState([]);
+
+  useEffect(() => {
+    console.log(tasks);
+  }, [tasks]);
 
   function addCourse(newCourse) {
     setCourses([...courses, newCourse]);
@@ -55,10 +61,23 @@ function App() {
   }
 
   function editTask(modifiedTask) {
-    setTasks((prevTasks) =>
-      prevTasks.map((task) =>
-        task.taskId === modifiedTask.taskId ? modifiedTask : task
-      )
+    const deletePos = tasks.findIndex(
+      (task) => task.taskId === modifiedTask.taskId
+    );
+
+    if (deletePos === -1) return;
+
+    setTasks(
+      produce((draft) => {
+        draft.splice(deletePos, 1);
+
+        let insertPos = draft.findIndex(
+          (task) => task.dueDate > modifiedTask.dueDate
+        );
+        
+        if (insertPos === -1) insertPos = draft.length;
+        draft.splice(insertPos, 0, modifiedTask);
+      })
     );
   }
 
@@ -75,6 +94,7 @@ function App() {
           course={courses.find((course) => course.courseId === courseId)}
           tasks={courseTasks}
           addTask={addTask}
+          editTask={editTask}
         />
       ))}
     </>

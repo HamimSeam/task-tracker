@@ -1,12 +1,12 @@
 import { TaskPreview } from "../Task/Task.jsx";
 import "./Course.css";
 
-function Course({ course, tasks, addTask }) {
+function Course({ course, tasks, addTask, editTask }) {
   function handleAddTask() {
     const newTask = {
       name: "New Task",
       courseId: course.courseId,
-      dueDate: undefined,
+      dueDate: Infinity,
       description: "",
       taskId: crypto.randomUUID(),
     };
@@ -19,7 +19,7 @@ function Course({ course, tasks, addTask }) {
       <div className="course">
         <h3>{course.name}</h3>
         {tasks.map((task) => (
-          <TaskPreview key={task.taskId} task={task} course={course} />
+          <TaskPreview key={task.taskId} task={task} course={course} editTask={editTask} />
         ))}
         <button onClick={handleAddTask}>+</button>
       </div>

@@ -26,6 +26,11 @@
     resize: none;
 }
 
+.task-buttons-container {
+    display: flex;
+    justify-content: right;
+}
+
 .task button {
     background: none;
     border: none;
@@ -39,8 +44,14 @@
     font-weight: bold;
 }
 
-.course-due-date * {
+.course-due-date {
+    display: flex;
+    justify-content: space-between;
     font-family: "Prompt", serif;
-    font-size: 1em;
     font-weight: 500;
+}
+
+.course-due-date * {
+    margin-top: 0px;
+    font-size: 1em;
 }

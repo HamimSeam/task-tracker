@@ -2,14 +2,13 @@ import { useState } from "react";
 import { useRef } from "react";
 import "./Task.css";
 
-export function TaskPreview({ task, course }) {
+export function TaskPreview({ task, course, editTask }) {
   const modalRef = useRef(null);
 
   function toggleShowTask() {
     if (modalRef.current.hasAttribute("open")) modalRef.current.close();
     else modalRef.current.showModal();
   }
-
   return (
     <>
       <div className="task-preview" onClick={toggleShowTask}>
@@ -21,86 +20,82 @@ export function TaskPreview({ task, course }) {
           onClose={toggleShowTask}
           task={task}
           course={course}
+          editTask={editTask}
         />
       }
     </>
   );
 }
 
-export function Task({ modalRef, onClose, task, course }) {
+export function Task({ modalRef, onClose, task, course, editTask }) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [modifiedTask, setModifiedTask] = useState(task);
+
+  function toggleEditTask() {
+    if (isEditing) setIsEditing(false);
+    else setIsEditing(true);
+  }
+
+  function handleChange(event) {
+    const field = event.target.name;
+    console.log(field, event.target.value);
+
+    setModifiedTask((prevModifiedTask) => ({
+      ...prevModifiedTask,
+      [field]: event.target.value,
+    }));
+  }
+
+  function handleSaveTask(event) {
+    event.preventDefault();
+    editTask(modifiedTask);
+    toggleEditTask();
+  }
+
   return (
     <dialog className="task" ref={modalRef}>
-      <button onClick={onClose}>Close Button</button>
-      <form>
+      <div className="task-buttons-container">
+        {isEditing ? (
+          <button onClick={handleSaveTask}>Save</button>
+        ) : (
+          <button onClick={toggleEditTask}>Edit</button>
+        )}
+        <button onClick={onClose}>Close</button>
+      </div>
+      <form onSubmit={handleSaveTask}>
         <input
           className="task-name"
           type="text"
           name="name"
           placeholder="Enter a task title..."
+          readOnly={!isEditing}
+          onChange={handleChange}
+          defaultValue={task.name}
         ></input>
         <div className="course-due-date">
-          <span>{course.name} • Due: </span>
-          <input className="task-due-date" type="date" name="due-date"></input>
+          <p className="task-course">{course.name}</p>
+          <div className="task-due-date-container">
+            <span>Due: </span>
+            <input
+              className="task-due-date"
+              type="date"
+              name="dueDate"
+              readOnly={!isEditing}
+              onChange={handleChange}
+              defaultValue={task.dueDate === Infinity ? "" : task.dueDate}
+            ></input>
+          </div>
         </div>
         <textarea
           className="task-description"
           type="text"
           name="description"
           placeholder="Enter a description..."
+          readOnly={!isEditing}
+          onChange={handleChange}
+          defaultValue={task.description}
         ></textarea>
       </form>
     </dialog>
-  );
-}
-
-export function TaskModal({ addTask, onClose }) {
-  function handleFormSubmit(event) {
-    event.preventDefault();
-    const form = event.target;
-
-    const title = form["title"].value;
-    const course = form["course"].value;
-    const dueDate = form["due-date"].value;
-    const description = form["description"].value;
-    const id = Date.now();
-
-    const taskInfo = {
-      title,
-      course,
-      dueDate,
-      description,
-      id,
-    };
-
-    addTask(taskInfo);
-  }
-
-  return (
-    <>
-      <dialog className="task-modal">
-        <form onSubmit={handleFormSubmit}>
-          <label htmlFor="title">Task Title: </label>
-          <input type="text" id="title" name="title" required />
-          <br />
-
-          <label htmlFor="course">Course: </label>
-          <input type="text" id="course" name="course" />
-          <br />
-
-          <label htmlFor="due-date">Due Date: </label>
-          <input type="date" id="due-date" name="due-date" />
-          <br />
-
-          <label htmlFor="description">Description: </label>
-          <input type="text" id="description" name="description" />
-          <br />
-
-          <button type="submit">Add Task</button>
-        </form>
-        <button type="button" onClick={onClose}>
-          Close Modal
-        </button>
-      </dialog>
-    </>
   );
 }
