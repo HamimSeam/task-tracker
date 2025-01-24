@@ -6,13 +6,8 @@ export function TaskPreview({ task, course, editTask }) {
   const modalRef = useRef(null);
 
   function toggleShowTask() {
-    if (modalRef.current.hasAttribute("open")) {
-      console.log("closing modal");
-      modalRef.current.close();
-    } else {
-      console.log("opening modal");
-      modalRef.current.showModal();
-    }
+    if (modalRef.current.hasAttribute("open")) modalRef.current.close();
+    else modalRef.current.showModal();
   }
 
   return (
@@ -89,7 +84,8 @@ export function Task({ modalRef, toggleShowTask, task, course, editTask }) {
   }
 
   return (
-    <dialog className="task" ref={modalRef}>
+    <dialog className="task-modal" ref={modalRef}>
+      <div className="task">
       <div className="task-buttons-container">
         {isEditing ? (
           <>
@@ -118,11 +114,12 @@ export function Task({ modalRef, toggleShowTask, task, course, editTask }) {
             <p>No due date</p>
           ) : (
             <div className="task-due-date-container">
-              <label htmlFor="dueDate">Due: </label>
+              <label htmlFor="due-date">Due: </label>
               <input
                 className="task-due-date"
                 type={isEditing ? "datetime-local" : "text"}
                 name="dueDate"
+                id="due-date"
                 readOnly={!isEditing}
                 onChange={handleChange}
                 value={
@@ -145,6 +142,7 @@ export function Task({ modalRef, toggleShowTask, task, course, editTask }) {
           value={modifiedTask.description}
         ></textarea>
       </form>
+      </div>
     </dialog>
   );
 }
