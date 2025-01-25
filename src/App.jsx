@@ -83,7 +83,7 @@ function App() {
   }
 
   function removeTask(taskId) {
-    setTasks((prevTasks) => prevTasks.filter((task) => task.taskId === taskId));
+    setTasks((prevTasks) => prevTasks.filter((task) => task.taskId !== taskId));
   }
 
   const tasksFor = getTasksByCourse();
@@ -96,6 +96,7 @@ function App() {
           tasks={courseTasks}
           addTask={addTask}
           editTask={editTask}
+          removeTask={removeTask}
         />
       ))}
       {/* <pre>{JSON.stringify(tasks, null, 2)}</pre> */}

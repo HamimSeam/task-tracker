@@ -1,7 +1,7 @@
 import { TaskPreview } from "../Task/Task.jsx";
 import "./Course.css";
 
-function Course({ course, tasks, addTask, editTask }) {
+function Course({ course, tasks, addTask, editTask, removeTask }) {
   function handleAddTask() {
     const newTask = {
       name: "New Task",
@@ -37,6 +37,7 @@ function Course({ course, tasks, addTask, editTask }) {
             task={task}
             course={course}
             editTask={editTask}
+            removeTask={removeTask}
           />
         ))}
       </div>
