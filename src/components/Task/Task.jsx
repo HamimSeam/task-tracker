@@ -1,5 +1,6 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useRef } from "react";
+import { createPortal } from "react-dom";
 import "./Task.css";
 
 export function TaskPreview({ task, course, editTask }) {
@@ -22,15 +23,16 @@ export function TaskPreview({ task, course, editTask }) {
       <div className="task-preview" onClick={toggleShowTask}>
         <h4>{task.name}</h4>
       </div>
-      {
+      {createPortal(
         <Task
           modalRef={modalRef}
           toggleShowTask={toggleShowTask}
           task={task}
           course={course}
           editTask={editTask}
-        />
-      }
+        />,
+        document.getElementById("modals")
+      )}
     </>
   );
 }
