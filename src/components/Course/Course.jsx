@@ -17,7 +17,7 @@ function Course({ course, tasks, addTask, editTask }) {
   return (
     <>
       <div className="course">
-        <h3>{course.name}</h3>
+        <h1>{course.name}</h1>
         {tasks.map((task) => (
           <TaskPreview key={task.taskId} task={task} course={course} editTask={editTask} />
         ))}

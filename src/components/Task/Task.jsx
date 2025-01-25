@@ -6,14 +6,21 @@ export function TaskPreview({ task, course, editTask }) {
   const modalRef = useRef(null);
 
   function toggleShowTask() {
-    if (modalRef.current.hasAttribute("open")) modalRef.current.close();
-    else modalRef.current.showModal();
+    const body = document.querySelector("body");
+
+    if (modalRef.current.open) {
+      body.style.overflow = "auto";
+      modalRef.current.close();
+    } else {
+      body.style.overflow = "hidden";
+      modalRef.current.showModal();
+    }
   }
 
   return (
     <>
       <div className="task-preview" onClick={toggleShowTask}>
-        <h3>{task.name}</h3>
+        <h4>{task.name}</h4>
       </div>
       {
         <Task
@@ -64,7 +71,9 @@ export function Task({ modalRef, toggleShowTask, task, course, editTask }) {
 
   function handleSaveTask(event) {
     event.preventDefault();
+    toggleShowTask();
     editTask(modifiedTask);
+    toggleShowTask();
     toggleEditTask();
   }
 
@@ -86,62 +95,63 @@ export function Task({ modalRef, toggleShowTask, task, course, editTask }) {
   return (
     <dialog className="task-modal" ref={modalRef}>
       <div className="task">
-      <div className="task-buttons-container">
-        {isEditing ? (
-          <>
-            <button onClick={handleSaveTask}>Save</button>
-            <button onClick={handleCancel}>Cancel</button>
-          </>
-        ) : (
-          <button onClick={toggleEditTask}>Edit</button>
-        )}
-        <button onClick={handleClose}>Close</button>
-      </div>
-      <form className="task-content" onSubmit={handleSaveTask}>
-        <input
-          className="task-name"
-          type="text"
-          name="name"
-          placeholder="Enter a task title..."
-          readOnly={!isEditing}
-          onChange={handleChange}
-          value={modifiedTask.name}
-        ></input>
-
-        <div className="course-due-date">
-          <p className="task-course">{course.name}</p>
-          {task.dueDate === "" && !isEditing ? (
-            <p>No due date</p>
+        <div className="task-buttons-container">
+          {isEditing ? (
+            <>
+              <button onClick={handleSaveTask}>Save</button>
+              <button onClick={handleCancel}>Cancel</button>
+            </>
           ) : (
-            <div className="task-due-date-container">
-              <label htmlFor="due-date">Due: </label>
-              <input
-                className="task-due-date"
-                type={isEditing ? "datetime-local" : "text"}
-                name="dueDate"
-                id="due-date"
-                readOnly={!isEditing}
-                onChange={handleChange}
-                value={
-                  isEditing
-                    ? modifiedTask.dueDate
-                    : formatDate(modifiedTask.dueDate)
-                }
-              ></input>
-            </div>
+            <button onClick={toggleEditTask}>Edit</button>
           )}
+          <button onClick={handleClose}>Close</button>
         </div>
+        <form className="task-content" onSubmit={handleSaveTask}>
+          <input
+            className="task-name"
+            type="text"
+            name="name"
+            placeholder="Enter a task title..."
+            readOnly={!isEditing}
+            onChange={handleChange}
+            value={modifiedTask.name}
+          ></input>
 
-        <textarea
-          className="task-description"
-          type="text"
-          name="description"
-          placeholder="Enter a description..."
-          readOnly={!isEditing}
-          onChange={handleChange}
-          value={modifiedTask.description}
-        ></textarea>
-      </form>
+          <div className="course-due-date">
+            <p className="task-course">{course.name}</p>
+            {task.dueDate === "" && !isEditing ? (
+              <p>No due date</p>
+            ) : (
+              <div className="task-due-date-container">
+                <label htmlFor="due-date">Due: </label>
+                <input
+                  className="task-due-date"
+                  type={isEditing ? "datetime-local" : "text"}
+                  name="dueDate"
+                  id="due-date"
+                  readOnly={!isEditing}
+                  onChange={handleChange}
+                  value={
+                    isEditing
+                      ? modifiedTask.dueDate
+                      : formatDate(modifiedTask.dueDate)
+                  }
+                ></input>
+              </div>
+            )}
+          </div>
+
+          <hr />
+          <textarea
+            className="task-description"
+            type="text"
+            name="description"
+            placeholder="Enter a description..."
+            readOnly={!isEditing}
+            onChange={handleChange}
+            value={modifiedTask.description}
+          ></textarea>
+        </form>
       </div>
     </dialog>
   );

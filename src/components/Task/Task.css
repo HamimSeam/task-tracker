@@ -1,5 +1,6 @@
 .task-preview {
     background-color: rgb(67, 126, 178);
+    color: white;
 }
 
 .task-preview * {
@@ -58,7 +59,7 @@
 }
 
 .task-name {
-    font-size: 2.5em;
+    font-size: 2.5rem;
     font-family: "Poppins", serif;
     font-weight: bold;
     flex-grow: 0;
@@ -68,23 +69,32 @@
     display: flex;
     justify-content: space-between;
     flex-grow: 0;
-}
-
-.course-due-date * {
-    margin-top: 0px;
-    font-size: 1em;
+    font-size: 1rem;
     font-family: "Prompt", serif;
     font-weight: 500;
 }
 
+.course-due-date * {
+    margin-top: 0%;
+    margin-bottom: 0%;
+}
+
 .task-due-date {
-    width: 350px;
+    width: 30ch;
+    font: inherit;
+}
+
+.task hr {
+    width: 100%;
+    height: 1px;
+    background-color: black;
+    margin-bottom: 2%;
 }
 
 .task-description {
     resize: none;
     width: 100%;
-    font-size: 1.25em;
+    font-size: 1.25rem;
     font-family: sans-serif;
     flex-grow: 1;
 }
