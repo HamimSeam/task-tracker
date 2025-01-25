@@ -1,12 +1,27 @@
 .task-preview {
-    background-color: rgb(67, 126, 178);
-    color: white;
+    border-bottom: 3px solid rgb(15, 139, 139);
+    padding: 20px;
+    background-color:whitesmoke;
+    color: black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.task-preview:hover {
+    cursor: pointer;
 }
 
 .task-preview * {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    font-family: "Poppins", sans-serif;
+}
+
+.task-preview button {
+    background: none;
+    border: none;
 }
 
 ::backdrop {
@@ -72,6 +87,7 @@
     font-size: 1rem;
     font-family: "Prompt", serif;
     font-weight: 500;
+    height: 5%;
 }
 
 .course-due-date * {

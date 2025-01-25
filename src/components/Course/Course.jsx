@@ -17,11 +17,28 @@ function Course({ course, tasks, addTask, editTask }) {
   return (
     <>
       <div className="course">
-        <h1>{course.name}</h1>
+        <div className="course-heading">
+          <span className="course-name">{course.name}</span>
+          <button className="add-task-button" onClick={handleAddTask}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="24px"
+              viewBox="0 -960 960 960"
+              width="24px"
+              fill="white"
+            >
+              <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
+            </svg>
+          </button>
+        </div>
         {tasks.map((task) => (
-          <TaskPreview key={task.taskId} task={task} course={course} editTask={editTask} />
+          <TaskPreview
+            key={task.taskId}
+            task={task}
+            course={course}
+            editTask={editTask}
+          />
         ))}
-        <button onClick={handleAddTask}>+</button>
       </div>
     </>
   );

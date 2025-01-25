@@ -7,7 +7,7 @@ import "./App.css";
 function App() {
   const [courses, setCourses] = useState([
     {
-      name: "WEB 102",
+      name: "WEB102",
       courseId: "1",
     },
   ]);
@@ -56,7 +56,6 @@ function App() {
     return tasks.find((task) => task.taskId === taskId);
   }
 
-  // FIXME: maintain order for null dates
   function editTask(modifiedTask) {
     const deletePos = tasks.findIndex(
       (task) => task.taskId === modifiedTask.taskId
@@ -99,7 +98,7 @@ function App() {
           editTask={editTask}
         />
       ))}
-      <pre>{JSON.stringify(tasks, null, 2)}</pre>
+      {/* <pre>{JSON.stringify(tasks, null, 2)}</pre> */}
     </>
   );
 }
