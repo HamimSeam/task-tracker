@@ -1,5 +1,7 @@
 .task-preview {
-    border-bottom: 3px solid rgb(15, 139, 139);
+    border-left: 3px solid rgb(15, 139, 139);
+    border-right: 3px solid rgb(15, 139, 139);
+    border-bottom: 2px solid grey;
     padding: 20px;
     background-color:whitesmoke;
     color: black;
@@ -19,9 +21,16 @@
     font-family: "Poppins", sans-serif;
 }
 
-.task-preview button {
+.task-preview .right-content {
+    margin-left: 10px;
+    display: flex;
+    flex: 0 0 auto;
+}
+
+.task-remove-button {
+    margin-left: 10px;
     background: none;
-    border: none;
+    line-height: 0.1;
 }
 
 ::backdrop {
@@ -78,6 +87,7 @@
     font-family: "Poppins", serif;
     font-weight: bold;
     flex-grow: 0;
+    resize: none;
 }
 
 .course-due-date {

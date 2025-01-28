@@ -19,6 +19,11 @@
 .add-task-button {
     background: rgb(34, 70, 58);
     border: 0px;
+    border-radius: 50%;
+    padding: 5px;
+    color: white;
+    line-height: 0.5;
+    font-size: 3rem;
 }
 
 .course hr {

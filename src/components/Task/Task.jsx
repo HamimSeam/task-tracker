@@ -4,8 +4,9 @@ import { createPortal } from "react-dom";
 import "./Task.css";
 
 function formatDate(date) {
-  const parsedDate = new Date(date);
+  if (date === "") return "No due date";
 
+  const parsedDate = new Date(date);
   const options = {
     weekday: "long",
     year: "numeric",
@@ -44,17 +45,20 @@ export function TaskPreview({ task, course, editTask, removeTask }) {
     <>
       <div className="task-preview" onClick={toggleShowTask}>
         <span>{task.name}</span>
-        <button onClick={handleRemoveTask}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            height="24px"
-            viewBox="0 -960 960 960"
-            width="24px"
-            fill="black"
-          >
-            <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z" />
-          </svg>
-        </button>
+        <div className="right-content">
+          <span>{formatDate(task.dueDate)}</span>
+          <div className="task-remove-button" onClick={handleRemoveTask}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="24px"
+              viewBox="0 -960 960 960"
+              width="24px"
+              fill="black"
+            >
+              <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z" />
+            </svg>
+          </div>
+        </div>
       </div>
       {createPortal(
         <Task
@@ -85,6 +89,11 @@ export function Task({ modalRef, toggleShowTask, task, course, editTask }) {
   function handleChange(event) {
     const field = event.target.name;
 
+    if (event.target.className === "task-name") {
+      event.target.style.height = "auto";
+      event.target.style.height = event.target.scrollHeight + "px";
+    }
+
     setModifiedTask((prevModifiedTask) => ({
       ...prevModifiedTask,
       [field]: event.target.value,
@@ -93,9 +102,7 @@ export function Task({ modalRef, toggleShowTask, task, course, editTask }) {
 
   function handleSaveTask(event) {
     event.preventDefault();
-    toggleShowTask();
     editTask(modifiedTask);
-    toggleShowTask();
     toggleEditTask();
   }
 
@@ -149,15 +156,17 @@ export function Task({ modalRef, toggleShowTask, task, course, editTask }) {
           </button>
         </div>
         <form className="task-content" onSubmit={handleSaveTask}>
-          <input
+          <textarea
             className="task-name"
             type="text"
             name="name"
+            rows="1"
+            autoComplete="off"
             placeholder="Enter a task title..."
             readOnly={!isEditing}
             onChange={handleChange}
             value={modifiedTask.name}
-          ></input>
+          ></textarea>
 
           <div className="course-due-date">
             <p className="task-course">{course.name}</p>
